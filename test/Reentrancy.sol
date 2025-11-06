@@ -13,6 +13,8 @@ contract SimpleTest is Test {
     }
 
     function test_simple() external {
-        address(simple).call{gas: 50_000}("");
+        (bool success, bytes memory revertMessage) = address(simple).call{gas: 100_000}("");
+        assertFalse(success);
+        assertEq(revertMessage, abi.encodeWithSignature("Error(string)", ("reentrada detectada!")));
     }
 }

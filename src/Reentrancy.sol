@@ -6,16 +6,18 @@ contract Reentrancy {
     // Reentrancy Guard
     bool private guard;
 
-    uint256 private counter;
-
     constructor() payable {}
 
     fallback() external payable {
-        require(guard == false, "reentracy");
+        require(guard == false, "reentrada detectada!");
         guard = true;
-        // Carteira multi-assinatura
-        // Por default transfer disponibilzia 2300 gas
-        payable(this).call{gas: gasleft()}("");
+        // Não utilizamos transfer, pois Por default transfer disponibilzia 2300 gas
+        // carteiras multi-assinatura precisam de mais que isso.
+        (bool success, bytes memory message) = payable(this).call{gas: gasleft()}("");
+        assembly {
+            // Se a chamada reverteu, repasse a mensagem de erro.
+            if not(success) { revert(add(message, 32), mload(message)) }
+        }
         guard = false;
     }
 }
