@@ -38,10 +38,16 @@ contract CounterV1Test is Test {
     function test_incrementv2() external {
         assertEq(_counter.counter(), 1);
 
+        // calldata para a função `increment`
         bytes memory data = abi.encodeCall(CounterV1.increment, ());
         {
             uint256 custoExecucao;
-            (custoExecucao,) = estimateGas(address(_counter), 50_000, 0, data);
+            (custoExecucao,) = estimateGas(
+                address(_counter), // endereço do CounterV1
+                50_000, // gas limit
+                0, // valor
+                data // calldata para a função `increment`
+            );
             console.log("custo execucao: ", custoExecucao);
         }
         assertEq(_counter.counter(), 2);
