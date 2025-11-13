@@ -38,3 +38,11 @@ constant_optimizer = true
 # Use unchecked arithmetic when incrementing the counter of for loops
 # under certain circumstances. It is always on if no details are given.
 simple_counter_for_loop_unchecked_increment = true
+
+###############
+# EVM options #
+###############
+gas_limit = 30000000
+gas_price = 1
+block_base_fee_per_gas = 0
+block_gas_limit = 30000000
